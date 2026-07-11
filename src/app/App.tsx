@@ -958,8 +958,8 @@ function AboutPage({ navigate }: { navigate: (t: Page) => void }) {
           <h3 className="mb-12" style={{ fontFamily: F, fontWeight: 500, color: ASH, fontSize: "clamp(2rem, 4.5vw, 3.4rem)", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
             Founder-led. <span style={{ fontFamily: SERIF, fontStyle: "italic", fontWeight: 300, color: "rgba(242,242,242,0.7)" }}>Operator-advised.</span>
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-            <div className="max-w-2xl">
+            <div className="max-w-2xl mx-auto">
+            <div>
             <div>
               <p className="text-base md:text-lg mb-6" style={{ color: "rgba(242,242,242,0.85)", fontFamily: F, fontWeight: 300, lineHeight: 1.6 }}>
                 ACT is a personal holding company, founded and led by design. Its structure reflects two decades of building regulated, brand-led businesses across sport, health and consumer categories — and the belief that the next generation of great companies will be built by operators who understand both product and policy.
