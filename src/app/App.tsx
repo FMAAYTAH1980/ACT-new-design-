@@ -1196,19 +1196,42 @@ function ApplyPage({ navigate: _navigate }: { navigate: (t: Page) => void }) {
             The form.
           </h3>
 
-          <form onSubmit={(e) => e.preventDefault()} className="max-w-4xl space-y-16">
+            <form onSubmit={async (e) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const btn = form.querySelector('button[type="submit"]');
+            const label = btn ? btn.querySelector('span') : null;
+            const original = label ? label.textContent : "";
+            if (label) label.textContent = "Sending…";
+            try {
+              const data = new FormData(form);
+              data.append("access_key", "99ea59bb-3037-462a-9b5d-1d59f17d7db9");
+              data.append("subject", "New AI Idea Application — act-fm.com");
+              data.append("from_name", "ACT Holding Website");
+              const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: data });
+              const json = await res.json();
+              if (json.success) {
+                if (label) label.textContent = "Application sent ✓";
+                form.reset();
+              } else {
+                if (label) label.textContent = "Error — try again";
+              }
+            } catch {
+              if (label) label.textContent = "Error — try again";
+            }
+          }} className="max-w-4xl space-y-16">
             <div>
               <div className="text-[10px] tracking-[0.35em] uppercase mb-8" style={{ color: SLATE, fontFamily: F }}>About you</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
                 {[
-                  { l: "Full name", t: "text" },
-                  { l: "Email", t: "email" },
-                  { l: "Country", t: "text" },
-                  { l: "Role / company", t: "text" },
+                  { l: "Full name", t: "text", n: "full_name" },
+                  { l: "Email", t: "email", n: "email" },
+                  { l: "Country", t: "text", n: "country" },
+                  { l: "Role / company", t: "text", n: "role_company" },
                 ].map(f => (
                   <div key={f.l}>
                     <label className="block text-[10px] tracking-[0.3em] uppercase mb-3" style={{ color: SLATE, fontFamily: F }}>{f.l}</label>
-                    <input type={f.t} className="w-full bg-transparent outline-none pb-3 text-base focus:border-white/60"
+                    <input type={f.t} name={f.n} required={f.n === "full_name" || f.n === "email"} className="w-full bg-transparent outline-none pb-3 text-base focus:border-white/60"
                       style={{ borderBottom: "1px solid rgba(242,242,242,0.2)", color: ASH, fontFamily: F }} />
                   </div>
                 ))}
@@ -1218,7 +1241,7 @@ function ApplyPage({ navigate: _navigate }: { navigate: (t: Page) => void }) {
             <div>
               <div className="text-[10px] tracking-[0.35em] uppercase mb-8" style={{ color: SLATE, fontFamily: F }}>The opportunity</div>
               <label className="block text-[10px] tracking-[0.3em] uppercase mb-3" style={{ color: SLATE, fontFamily: F }}>What is the venture idea?</label>
-              <textarea rows={5} className="w-full bg-transparent outline-none pb-3 text-base resize-none focus:border-white/60"
+              <textarea rows={5} name="venture_idea" required className="w-full bg-transparent outline-none pb-3 text-base resize-none focus:border-white/60"
                 style={{ borderBottom: "1px solid rgba(242,242,242,0.2)", color: ASH, fontFamily: F }} />
             </div>
 
@@ -1227,9 +1250,8 @@ function ApplyPage({ navigate: _navigate }: { navigate: (t: Page) => void }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {validation.map(v => (
                   <label key={v} className="flex items-center gap-3 cursor-pointer group">
-                    <span className="w-4 h-4 rounded-sm inline-block transition-colors group-hover:border-white/60" style={{ border: "1px solid rgba(242,242,242,0.3)" }} />
+                    <input type="checkbox" name="validation" value={v} className="w-4 h-4 rounded-sm cursor-pointer accent-white" />
                     <span className="text-sm" style={{ color: ASH, fontFamily: F, fontWeight: 300 }}>{v}</span>
-                    <input type="checkbox" className="sr-only" />
                   </label>
                 ))}
               </div>
@@ -1240,9 +1262,8 @@ function ApplyPage({ navigate: _navigate }: { navigate: (t: Page) => void }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {needs.map(v => (
                   <label key={v} className="flex items-center gap-3 cursor-pointer group">
-                    <span className="w-4 h-4 rounded-sm inline-block transition-colors group-hover:border-white/60" style={{ border: "1px solid rgba(242,242,242,0.3)" }} />
+                    <input type="checkbox" name="needs" value={v} className="w-4 h-4 rounded-sm cursor-pointer accent-white" />
                     <span className="text-sm" style={{ color: ASH, fontFamily: F, fontWeight: 300 }}>{v}</span>
-                    <input type="checkbox" className="sr-only" />
                   </label>
                 ))}
               </div>
@@ -1251,7 +1272,7 @@ function ApplyPage({ navigate: _navigate }: { navigate: (t: Page) => void }) {
             <div>
               <div className="text-[10px] tracking-[0.35em] uppercase mb-8" style={{ color: SLATE, fontFamily: F }}>Commitment</div>
               <label className="block text-[10px] tracking-[0.3em] uppercase mb-3" style={{ color: SLATE, fontFamily: F }}>Are you working on this full-time?</label>
-              <select defaultValue="fulltime" className="w-full bg-transparent outline-none pb-3 text-base cursor-pointer focus:border-white/60 appearance-none"
+              <select name="commitment" defaultValue="fulltime" className="w-full bg-transparent outline-none pb-3 text-base cursor-pointer focus:border-white/60 appearance-none"
                 style={{ borderBottom: "1px solid rgba(242,242,242,0.2)", color: ASH, fontFamily: F, backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1.5L6 6.5L11 1.5' stroke='%2385868a' stroke-width='1.2'/></svg>\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 4px center" }}>
                 <option value="fulltime" style={{ background: "#0d0d0d" }}>Full-time</option>
                 <option value="considering" style={{ background: "#0d0d0d" }}>Considering full-time</option>
@@ -1261,15 +1282,18 @@ function ApplyPage({ navigate: _navigate }: { navigate: (t: Page) => void }) {
 
             <div>
               <div className="text-[10px] tracking-[0.35em] uppercase mb-8" style={{ color: SLATE, fontFamily: F }}>Supporting materials</div>
-              <label className="block text-[10px] tracking-[0.3em] uppercase mb-3" style={{ color: SLATE, fontFamily: F }}>Pitch deck (link or URL)</label>
-              <input type="url" placeholder="https://..." className="w-full bg-transparent outline-none pb-3 text-base focus:border-white/60"
+              <label className="block text-[10px] tracking-[0.3em] uppercase mb-3" style={{ color: SLATE, fontFamily: F }}>Pitch deck — upload PDF (max 5MB)</label>
+              <input type="file" name="pitch_deck_file" accept="application/pdf" className="w-full pb-3 text-base file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-white/10 file:text-white file:cursor-pointer"
+                style={{ color: ASH, fontFamily: F }} />
+              <label className="block text-[10px] tracking-[0.3em] uppercase mb-3 mt-8" style={{ color: SLATE, fontFamily: F }}>Or pitch deck link (for large files)</label>
+              <input type="url" name="pitch_deck_link" placeholder="https://..." className="w-full bg-transparent outline-none pb-3 text-base focus:border-white/60"
                 style={{ borderBottom: "1px solid rgba(242,242,242,0.2)", color: ASH, fontFamily: F }} />
             </div>
 
             <div>
               <div className="text-[10px] tracking-[0.35em] uppercase mb-8" style={{ color: SLATE, fontFamily: F }}>One more thing</div>
               <label className="block text-[10px] tracking-[0.3em] uppercase mb-3" style={{ color: SLATE, fontFamily: F }}>Anything else we should know?</label>
-              <textarea rows={4} className="w-full bg-transparent outline-none pb-3 text-base resize-none focus:border-white/60"
+              <textarea rows={4} name="anything_else" className="w-full bg-transparent outline-none pb-3 text-base resize-none focus:border-white/60"
                 style={{ borderBottom: "1px solid rgba(242,242,242,0.2)", color: ASH, fontFamily: F }} />
             </div>
 
