@@ -807,7 +807,7 @@ function ContactPage({ navigate: _navigate }: { navigate: (t: Page) => void }) {
 
             <div>
               <label className="block text-[10px] tracking-[0.35em] uppercase mb-3" style={{ color: SLATE, fontFamily: F }}>Subject</label>
-              <select defaultValue="investment" className="w-full bg-transparent outline-none pb-3 text-base cursor-pointer transition-colors focus:border-white/60 appearance-none"
+              <select name="subject_topic" defaultValue="investment" className="w-full bg-transparent outline-none pb-3 text-base cursor-pointer transition-colors focus:border-white/60 appearance-none"
                 style={{ borderBottom: "1px solid rgba(242,242,242,0.2)", color: ASH, fontFamily: F, backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1.5L6 6.5L11 1.5' stroke='%2385868a' stroke-width='1.2'/></svg>\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 4px center" }}>
                 <option value="investment" style={{ background: "#0d0d0d" }}>Investment opportunity</option>
                 <option value="partnership" style={{ background: "#0d0d0d" }}>Partnership</option>
@@ -819,7 +819,7 @@ function ContactPage({ navigate: _navigate }: { navigate: (t: Page) => void }) {
 
             <div className="md:col-span-2">
               <label className="block text-[10px] tracking-[0.35em] uppercase mb-3" style={{ color: SLATE, fontFamily: F }}>Message</label>
-              <textarea rows={4} className="w-full bg-transparent outline-none pb-3 text-base resize-none transition-colors focus:border-white/60"
+              <textarea rows={4} name="message" required className="w-full bg-transparent outline-none pb-3 text-base resize-none transition-colors focus:border-white/60"
                 style={{ borderBottom: "1px solid rgba(242,242,242,0.2)", color: ASH, fontFamily: F }} />
             </div>
 
