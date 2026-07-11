@@ -789,7 +789,10 @@ function ContactPage({ navigate: _navigate }: { navigate: (t: Page) => void }) {
             </p>
           </div>
 
-          <form onSubmit={(e) => e.preventDefault()} className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
+            <form action="https://api.web3forms.com/submit" method="POST" className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
+            <input type="hidden" name="access_key" value="99ea59bb-3037-462a-9b5d-1d59f17d7db9" />
+            <input type="hidden" name="subject" value="New Contact Message — act-fm.com" />
+            <input type="hidden" name="from_name" value="ACT Holding Website" />
             {[
               { name: "name", label: "Name", type: "text" },
               { name: "organization", label: "Organization", type: "text" },
@@ -797,7 +800,7 @@ function ContactPage({ navigate: _navigate }: { navigate: (t: Page) => void }) {
             ].map(f => (
               <div key={f.name}>
                 <label className="block text-[10px] tracking-[0.35em] uppercase mb-3" style={{ color: SLATE, fontFamily: F }}>{f.label}</label>
-                <input type={f.type} className="w-full bg-transparent outline-none pb-3 text-base transition-colors focus:border-white/60"
+                <input type={f.type} name={f.name} required={f.name === "name" || f.name === "email"} className="w-full bg-transparent outline-none pb-3 text-base transition-colors focus:border-white/60"
                   style={{ borderBottom: "1px solid rgba(242,242,242,0.2)", color: ASH, fontFamily: F }} />
               </div>
             ))}
