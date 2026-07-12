@@ -970,6 +970,7 @@ function AboutPage({ navigate }: { navigate: (t: Page) => void }) {
               <div className="text-[10px] tracking-[0.3em] uppercase mt-2" style={{ color: SLATE, fontFamily: F }}>Founder & CEO</div>
             </div>
           </div>
+           </div>
       </section>
 
       <PageCTA label={<>Want to understand the thesis behind ACT?</> as any}
